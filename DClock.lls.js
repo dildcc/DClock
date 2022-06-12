@@ -46,7 +46,7 @@ load();
 
 // 进服提示
 function LoadName(pl) {
-    pl.tell('欢迎进入服务器,要钟请输入/DClock,查看帮助请用/DCHelper');
+    pl.tell('欢迎进入服务器,要钟请输入/DClock,查看帮助请用/DCHelper(暂未制作完成)');
 }  
 
 function command(pl, comm) {
