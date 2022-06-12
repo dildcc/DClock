@@ -9,11 +9,12 @@
 //   |_______|        |________________|   |________________|
 
 // DIL工作室 室长:DCC 制作
+// 感谢Planet工作室
 
 // ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
 //LiteLoaderScript Dev Helper
-/// <reference path="c:\Users\douyi\Documents\Library/Library/JS/Api.js" /> 
+/// <reference path="C:\Users\douyi\Documents\Library\JS\Api.js" /> 
 
 // ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
@@ -22,7 +23,7 @@
 //插件注册
 let PLUGIN_NAME = "DClock";      //插件名称
 let PLUGIN_DESCRIPTION = "DClock 给钟插件 [未授权禁止转载]";     //插件描述
-let VERSION = [1,0,0];      //插件版本号
+let VERSION = [1,2,0];      //插件版本号
 let Publishing_website = "https://minebbs.com";   //插件发布地址
 let AUTHOR = "DIL工作室";       //插件作者
 
@@ -42,28 +43,26 @@ else{
     });
 };
 
-load();
 
 // 进服提示
 function LoadName(pl) {
-    pl.tell('欢迎进入服务器,要钟请输入/DClock,查看帮助请用/DCHelper(暂未制作完成)');
+    pl.tell('欢迎进入服务器,要钟请输入/DClock');
 }  
 
-function command(pl, comm) {
-    mc.runcmdEx('give "' + pl.realName + '" clock');
-    pl.tell('[DClock] 完成！');
-    return false;
-}
+let playerdata_path = "./DClock/playerdata.json" //配置文件
+let playerdata = data.openConfig(playerdata_path, "json", "{}")
 
-// 注册指令
-function load() {
-    mc.listen("onJoin", LoadName)
-    mc.regPlayerCmd('dclock', '获取一个钟', command, 0) // 给玩家一个钟
-}
 
-mc.regPlayerCmd("DCHelper","DClock 帮助",function(pl,args){
-    pl.tell("用/DClock来获取钟,BUG反馈去Github,QQ:2829000751") // 输出帮助文字
-    pl.tell(args[0])
+mc.regPlayerCmd("dclock", "给钟", function (pl, id) { //注册玩家指令
+    playerdata.reload() //重载配置文件
+    var player = playerdata.get(pl.realName) //读取配置文件
+    if (player == null){
+        playerdata.set(pl.realName,1)
+        mc.runcmdEx("give " + pl.realName + "colock")
+        pl.tell("[DClock]给钟完成")
+    } else {
+        pl.tell("[DClock]你已经获取了钟,无法重新获取")
+    }
 })
 
-// 制作完成
+//制作完成
